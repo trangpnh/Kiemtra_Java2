@@ -3,6 +3,8 @@ import model.Student;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Collections;
 
 ;
 
@@ -88,21 +90,24 @@ public class Main {
         studentDAO.update(s, id);
         System.out.println("Cập nhật thành công!");
     }
-    private static void option5(Scanner in) {
-        List<Student> studentList = studentDAO.getAll();
-        System.out.print("\tNhập id cần tìm:");
+    private static void option5(Scanner in){
+        System.out.println("Nhập ID sinh viên cần tìm");
         String id = in.nextLine();
-        Student tmp = StudentDAO.getById(id);
-        if (tmp == null) {
-            System.out.println("Không tồn tại sinh viên này");
-            return ;
+        Student tmp = studentDAO.getById(id);
+        if(tmp == null){
+            System.out.println("Sinh viên không tồn tại");
+            return;
         }
-        System.out.printf("%-20s %-20s %-20d %-20s %-20s %-20s %-20s %-20f","Mã sinh viên", "Họ tên", "Giới tính","Ngày Sinh", "Địa chỉ","Số điện thoại", "Email", "GPA");
-        System.out.println();
-        for (int i = 0; i < studentList.size(); i++) {
-            Student p = studentList.get(i);
-            System.out.printf("%-20s %-20s %-20d %-20s %-20s %-20s %-20s %-20f\n", p.getId(), p.getFull_name(), p.getGender(),p.getNgaySinh(), p.getAddress(),p.getPhone(),p.getEmail(),p.getGpa());
-        }
+        studentDAO.getById(id);
+        System.out.println(tmp);
+    }
+    private static void option6(){
+        List<Student> sortStudent = new ArrayList<>();
+        sortStudent = studentDAO.getAll();
+        Collections.sort(sortStudent);
+        sortStudent.stream().forEach(student -> {
+            System.out.println("ID: " + student.getId() + "--- Name: "  +student.getFull_name() + " ----- GPA = " + student.getGpa());
+        });
     }
 
     public static void main(String[] args) {
@@ -130,9 +135,11 @@ public class Main {
                 case 4:
                     option4(in);
                     break;
-                case 5:option5(in);
+                case 5:
+                    option5(in);
                     break;
                 case 6:
+                    option6();
                     break;
                 case 7:
                     break;
